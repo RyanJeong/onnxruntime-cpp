@@ -5,7 +5,7 @@
 #     (1) linaro-aarch64-2018.08-gcc8.2
 #     (2) linaro-aarch64-2020.09-gcc10.2-linux5.4
 
-NUM_CORE=$(grep processor /proc/cpuinfo | awk '{field=$NF};END{print field+1}')
+# NUM_CORE=$(grep processor /proc/cpuinfo | awk '{field=$NF};END{print field+1}')
 WORKING_DIR=$(pwd)
 
 export PATH=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/:$PATH
