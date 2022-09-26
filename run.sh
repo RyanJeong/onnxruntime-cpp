@@ -8,6 +8,10 @@
 NUM_CORE=$(grep processor /proc/cpuinfo | awk '{field=$NF};END{print field+1}')
 WORKING_DIR=$(pwd)
 
+export PATH=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/:$PATH
+export CC=aarch64-linux-gnu-gcc
+export CXX=aarch64-linux-gnu-g++
+
 # 1. protobuf
 cd $WORKING_DIR
 
@@ -41,9 +45,8 @@ git submodule update --init --recursive
 
 mkdir aarch64_build
 cd aarch64_build/
-
 cmake ../cmake -G"Unix Makefiles" \
-  -DONNX_CUSTOM_PROTOC_EXECUTABLE=$WORKING_DIR/$ONNX_PROTOUF/bin/protoc \
+  -DONNX_CUSTOM_PROTOC_EXECUTABLE=$WORKING_DIR/$ONNX_PROTOBUF/bin/protoc \
   -DCMAKE_TOOLCHAIN_FILE=$WORKING_DIR/tool.cmake
 cmake --build . \
   --config Release \
