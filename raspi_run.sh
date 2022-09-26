@@ -1,4 +1,4 @@
-isudo apt-get update
+sudo apt-get update
 sudo apt-get install -y \
     sudo \
     build-essential \
@@ -18,14 +18,11 @@ pip3 install --upgrade wheel
 pip3 install numpy
 
 # Build the latest cmake
-mkdir /code
-cd /code
-wget https://cmake.org/files/v3.16/cmake-3.16.1.tar.gz;
-tar zxf cmake-3.16.1.tar.gz
-
-cd /code/cmake-3.16.1
+wget https://github.com/Kitware/CMake/releases/download/v3.21.1/cmake-3.21.1.tar.gz
+tar zxf cmake-3.21.1.tar.gz
+cd cmake-3.21.1/
 ./configure --system-curl
-make
+make -j2
 sudo make install
 
 # Prepare onnxruntime Repo
@@ -34,16 +31,35 @@ git clone --recursive https://github.com/Microsoft/onnxruntime
 
 # Start the basic build
 cd /code/onnxruntime
-./build.sh --config Release --update --build
-# ./build.sh --config MinSizeRel --update --build
+./build.sh \
+  --skip_submodule_sync \
+  --config Release \
+  --update \
+  --build \
+  --parallel \
+  --cmake_extra_defines \
+  ONNXRUNTIME_VERSION=$(cat ./VERSION_NUMBER)
 
-# Build Shared Library
-./build.sh --config Release --build_shared_lib
-# ./build.sh --config MinSizeRel --build_shared_lib
+# ./build.sh \
+#   --skip_submodule_sync \
+#   --config Release \
+#   --build_wheel \
+#   --update \
+#   --build \
+#   --parallel \
+#   --cmake_extra_defines \
+#   ONNXRUNTIME_VERSION=$(cat ./VERSION_NUMBER)
 
-# Build Python Bindings and Wheel
-./build.sh --config Release --enable_pybind --build_wheel
-# ./build.sh --config MinSizeRel --enable_pybind --build_wheel
+# ./build.sh --config Release --update --build
+# # ./build.sh --config MinSizeRel --update --build
+# 
+# # Build Shared Library
+# ./build.sh --config Release --build_shared_lib
+# # ./build.sh --config MinSizeRel --build_shared_lib
+# 
+# # Build Python Bindings and Wheel
+# ./build.sh --config Release --enable_pybind --build_wheel
+# # ./build.sh --config MinSizeRel --enable_pybind --build_wheel
 
 # Build Output
 ls -l /code/onnxruntime/build/Linux/MinSizeRel/*.so
