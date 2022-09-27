@@ -43,11 +43,9 @@ cd $WORKING_DIR
 
 # pip uninstall onnx
 
-git clone git@github.com:microsoft/onnxruntime.git
-cd onnxruntime
 # must match the version of the protoc which is used in onnxruntime that currently using
-# git checkout v1.12.0
-git pull
+git clone git@github.com:microsoft/onnxruntime.git -b v1.12.0
+cd onnxruntime
 git submodule sync
 git submodule update --init --recursive
 
