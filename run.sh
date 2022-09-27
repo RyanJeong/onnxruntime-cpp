@@ -7,10 +7,14 @@
 
 NUM_CORE=$(grep processor /proc/cpuinfo | awk '{field=$NF};END{print field+1}')
 WORKING_DIR=$(pwd)
+ONNXRUNTIME_PREFIX=/usr/local/onnxruntime-aarch64/
 
 export PATH=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/:$PATH
 export CC=aarch64-linux-gnu-gcc
 export CXX=aarch64-linux-gnu-g++
+
+sudo mkdir $ONNXRUNTIME_PREFIX
+sudo chmod 777 -R $ONNXRUNTIME_PREFIX
 
 # 1. protobuf
 cd $WORKING_DIR
@@ -37,7 +41,7 @@ rm *.zip
 # 2. [WIP] onnxruntime
 cd $WORKING_DIR
 
-pip uninstall onnx
+# pip uninstall onnx
 
 git clone git@github.com:microsoft/onnxruntime.git
 cd onnxruntime
@@ -57,11 +61,12 @@ cp $WORKING_DIR/CMakeLists.txt $WORKING_DIR/onnxruntime/cmake/external/onnx
 mkdir aarch64_build
 cd aarch64_build/
 cmake ../cmake -G"Unix Makefiles" \
+  -DCMAKE_INSTALL_PREFIX=$ONNXRUNTIME_PREFIX \
   -DCMAKE_BUILD_TYPE=Release \
   -DONNX_CUSTOM_PROTOC_EXECUTABLE=$WORKING_DIR/$ONNX_PROTOBUF/bin/protoc \
   -DCMAKE_TOOLCHAIN_FILE=$WORKING_DIR/tool.cmake
-make -j$NUM_CORE
-# cmake --build . \
-#   --config Release \
-#   --target install \
-#   -- -j$NUM_CORE
+# make -j$NUM_CORE
+cmake --build . \
+  --config Release \
+  --target install \
+  -- -j$NUM_CORE
