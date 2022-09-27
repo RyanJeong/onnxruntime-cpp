@@ -26,7 +26,7 @@ make -j2
 sudo make install
 
 # Prepare onnxruntime Repo
-cd /code
+cd ~/
 git clone --recursive https://github.com/Microsoft/onnxruntime
 
 # Start the basic build
