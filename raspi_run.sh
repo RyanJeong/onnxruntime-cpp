@@ -22,7 +22,8 @@ wget https://github.com/Kitware/CMake/releases/download/v3.21.1/cmake-3.21.1.tar
 tar zxf cmake-3.21.1.tar.gz
 cd cmake-3.21.1/
 ./configure --system-curl
-make -j2
+# make -j2
+make
 sudo make install
 
 # Prepare onnxruntime Repo
@@ -39,6 +40,20 @@ cd /code/onnxruntime
   --parallel \
   --cmake_extra_defines \
   ONNXRUNTIME_VERSION=$(cat ./VERSION_NUMBER)
+
+# If you want to build onnxruntime shared library:
+./build.sh \
+  --skip_submodule_sync \
+  --config Release \
+  --update \
+  --build_shared_lib \
+  --parallel \
+  --cmake_extra_defines \
+  ONNXRUNTIME_VERSION=$(cat ./VERSION_NUMBER)
+
+# Dummy scripts for reference
+#   /usr/local/bin/cmake --build /home/pi/onnxruntime/build/Linux/Release --config Release -- -j2
+#   /usr/local/bin/cmake --build /home/pi/onnxruntime/build/Linux/Release --config Release -- -j1
 
 # ./build.sh \
 #   --skip_submodule_sync \
@@ -62,5 +77,7 @@ cd /code/onnxruntime
 # # ./build.sh --config MinSizeRel --enable_pybind --build_wheel
 
 # Build Output
-ls -l /code/onnxruntime/build/Linux/MinSizeRel/*.so
-ls -l /code/onnxruntime/build/Linux/MinSizeRel/dist/*.whl
+ls -l /code/onnxruntime/build/Linux/Release/*.so
+ls -l /code/onnxruntime/build/Linux/Release/dist/*.whl
+# ls -l /code/onnxruntime/build/Linux/MinSizeRel/*.so
+# ls -l /code/onnxruntime/build/Linux/MinSizeRel/dist/*.whl
