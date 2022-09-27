@@ -5,7 +5,7 @@
 #     (1) linaro-aarch64-2018.08-gcc8.2
 #     (2) linaro-aarch64-2020.09-gcc10.2-linux5.4
 
-# NUM_CORE=$(grep processor /proc/cpuinfo | awk '{field=$NF};END{print field+1}')
+NUM_CORE=$(grep processor /proc/cpuinfo | awk '{field=$NF};END{print field+1}')
 WORKING_DIR=$(pwd)
 
 export PATH=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/:$PATH
@@ -39,7 +39,7 @@ pip uninstall onnx
 git clone git@github.com:microsoft/onnxruntime.git
 cd onnxruntime
 # must match the version of the protoc which is used in onnxruntime that currently using
-git checkout v1.10.0
+git checkout v1.9.0
 git submodule sync
 git submodule update --init --recursive
 
@@ -48,7 +48,8 @@ cd aarch64_build/
 cmake ../cmake -G"Unix Makefiles" \
   -DONNX_CUSTOM_PROTOC_EXECUTABLE=$WORKING_DIR/$ONNX_PROTOBUF/bin/protoc \
   -DCMAKE_TOOLCHAIN_FILE=$WORKING_DIR/tool.cmake
-cmake --build . \
-  --config Release \
-  --target install \
-  -- -j$NUM_CORE
+make
+# cmake --build . \
+#   --config Release \
+#   --target install \
+#   -- -j$NUM_CORE
