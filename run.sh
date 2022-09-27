@@ -16,13 +16,13 @@ export CXX=aarch64-linux-gnu-g++
 cd $WORKING_DIR
 
 ONNX_PROTOBUF_VERSION_MAJOR=3
-ONNX_PROTOBUF_VERSION_MINOR=18
-ONNX_PROTOBUF_VERSION_PATCH=1
+ONNX_PROTOBUF_VERSION_MINOR=16
+ONNX_PROTOBUF_VERSION_PATCH=0
 ONNX_PROTOBUF="protobuf-\
 $ONNX_PROTOBUF_VERSION_MAJOR"."\
 $ONNX_PROTOBUF_VERSION_MINOR"."\
 $ONNX_PROTOBUF_VERSION_PATCH"
-ONNX_PROTOBUF_URL="https://github.com/protocolbuffers/protobuf/releases/download/v3.18.1/protoc-\
+ONNX_PROTOBUF_URL="https://github.com/protocolbuffers/protobuf/releases/download/v3.16.0/protoc-\
 $ONNX_PROTOBUF_VERSION_MAJOR"."\
 $ONNX_PROTOBUF_VERSION_MINOR"."\
 $ONNX_PROTOBUF_VERSION_PATCH"-linux-x86_64.zip
@@ -39,7 +39,7 @@ pip uninstall onnx
 git clone git@github.com:microsoft/onnxruntime.git
 cd onnxruntime
 # must match the version of the protoc which is used in onnxruntime that currently using
-git checkout v1.12.0
+git checkout v1.10.0
 git submodule sync
 git submodule update --init --recursive
 
