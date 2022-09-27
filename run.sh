@@ -52,7 +52,7 @@ git submodule update --init --recursive
 # 
 # $ python3 --version
 # Python 3.6.9
-cp $working_dir/cmakelists.txt $working_dir/onnxruntime/cmake/external/onnx
+cp $WORKING_DIR/CMakeLists.txt $WORKING_DIR/onnxruntime/cmake/external/onnx
 
 mkdir aarch64_build
 cd aarch64_build/
