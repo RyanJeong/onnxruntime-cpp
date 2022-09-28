@@ -37,7 +37,8 @@ if [ ! -d $ONNXRUNTIME_FOLDER ]; then
   git clone git@github.com:microsoft/onnxruntime.git -b $ONNXRUNTIME_VERSION
 fi
 cd $ONNXRUNTIME_FOLDER
-git pull origin $ONNXRUNTIME_VERSION
+
+git checkout $ONNXRUNTIME_VERSION
 git submodule sync
 git submodule update --init --recursive
 
@@ -55,11 +56,16 @@ if [ -d $ONNXRUNTIME_BUILD ]; then
 fi
 mkdir -p $ONNXRUNTIME_BUILD
 cd $ONNXRUNTIME_BUILD
+
+PROTOBUF_TOOLCHAIN=$WORKING_DIR/tool.cmake
+if [ "$1" = "aarch64-linux-gnu" ]; then
+  $PROTOBUF_TOOLCHAIN=$WORKING_DIR/aarch64-linux-gnu-tool.cmake
+fi
 cmake ../cmake -G"Unix Makefiles" \
   -DCMAKE_INSTALL_PREFIX=$WORKING_DIR \
   -DCMAKE_BUILD_TYPE=Release \
   -DONNX_CUSTOM_PROTOC_EXECUTABLE=$PROTOBUF_FOLDER/bin/protoc \
-  -DCMAKE_TOOLCHAIN_FILE=$WORKING_DIR/tool.cmake
+  -DCMAKE_TOOLCHAIN_FILE=$PROTOBUF_TOOLCHAIN
 cmake --build . \
   --config Release \
   --target install \
