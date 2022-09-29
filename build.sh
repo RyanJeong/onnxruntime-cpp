@@ -57,15 +57,11 @@ fi
 mkdir -p $ONNXRUNTIME_BUILD
 cd $ONNXRUNTIME_BUILD
 
-PROTOBUF_TOOLCHAIN=$WORKING_DIR/tool.cmake
-if [ "$1" = "aarch64-linux-gnu" ]; then
-  $PROTOBUF_TOOLCHAIN=$WORKING_DIR/aarch64-linux-gnu-tool.cmake
-fi
 cmake ../cmake -G"Unix Makefiles" \
   -DCMAKE_INSTALL_PREFIX=$WORKING_DIR \
   -DCMAKE_BUILD_TYPE=Release \
   -DONNX_CUSTOM_PROTOC_EXECUTABLE=$PROTOBUF_FOLDER/bin/protoc \
-  -DCMAKE_TOOLCHAIN_FILE=$PROTOBUF_TOOLCHAIN
+  -DCMAKE_TOOLCHAIN_FILE=$WORKING_DIR/tool.cmake
 cmake --build . \
   --config Release \
   --target install \
