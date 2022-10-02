@@ -61,7 +61,8 @@ cmake ../cmake -G"Unix Makefiles" \
   -DCMAKE_INSTALL_PREFIX=$WORKING_DIR \
   -DCMAKE_BUILD_TYPE=Release \
   -DONNX_CUSTOM_PROTOC_EXECUTABLE=$PROTOBUF_FOLDER/bin/protoc \
-  -DCMAKE_TOOLCHAIN_FILE=$WORKING_DIR/tool.cmake
+  -DCMAKE_TOOLCHAIN_FILE=$WORKING_DIR/tool.cmake \
+  -Donnxruntime_BUILD_SHARED_LIB=ON
 cmake --build . \
   --config Release \
   --target install \
