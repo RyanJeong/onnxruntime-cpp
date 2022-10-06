@@ -1,0 +1,18 @@
+create libonnxruntime.a
+addlib ./libonnxruntime_common.a
+addlib ./libonnxruntime_framework.a
+addlib ./libonnxruntime_graph.a
+addlib ./libonnxruntime_mlas.a
+addlib ./libonnxruntime_optimizer.a
+addlib ./libonnxruntime_providers.a
+addlib ./libonnxruntime_session.a
+addlib ./libonnxruntime_util.a
+addlib ./external/onnx/libonnx.a
+addlib ./external/onnx/libonnx_proto.a
+addlib ./lib/libgmock.a
+addlib ./lib/libgtest.a
+addlib ./external/nsync/libnsync_cpp.a
+addlib ./external/re2/libre2.a
+addlib ./external/protobuf/cmake/libprotobuf-lite.a
+save
+end
