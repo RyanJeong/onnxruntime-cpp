@@ -2,7 +2,6 @@
 
 NUM_CORE=$(grep processor /proc/cpuinfo | awk '{field=$NF};END{print field+1}')
 WORKING_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
-AR=aarch64-gnu-acc-ar
 
 # protobuf
 PROTOBUF_VERSION_MAJOR=3
@@ -60,9 +59,27 @@ cd $ONNXRUNTIME_BUILD
 
 cp $WORKING_DIR/merge.mri $ONNXRUNTIME_BUILD
 
-cmake ../cmake -G"Unix Makefiles" \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DONNX_CUSTOM_PROTOC_EXECUTABLE=$PROTOBUF_FOLDER/bin/protoc \
-  -DCMAKE_TOOLCHAIN_FILE=$WORKING_DIR/tool.cmake
-make -j$NUM_CORE
-AR -M < ./merge.mri
+
+if [ "$1" = "onnxruntime-shared-library" ]; then
+  cmake ../cmake -G"Unix Makefiles" \
+    -DCMAKE_INSTALL_PREFIX=$WORKING_DIR \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DONNX_CUSTOM_PROTOC_EXECUTABLE=$PROTOBUF_FOLDER/bin/protoc \
+    -DCMAKE_TOOLCHAIN_FILE=$WORKING_DIR/tool.cmake \
+    -Donnxruntime_BUILD_SHARED_LIB=ON
+  cmake --build . \
+    --config Release \
+    --target install \
+    -- -j$NUM_CORE
+else
+  AR=aarch64-linux-gnu-ar
+  cmake ../cmake -G"Unix Makefiles" \
+    -DCMAKE_INSTALL_PREFIX=$WORKING_DIR \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DONNX_CUSTOM_PROTOC_EXECUTABLE=$PROTOBUF_FOLDER/bin/protoc \
+    -DCMAKE_TOOLCHAIN_FILE=$WORKING_DIR/tool.cmake
+  make -j$NUM_CORE
+  $AR -M < ./merge.mri
+  make install
+  cp $ONNXRUNTIME_BUILD/libonnxruntime.a $WORKING_DIR/lib
+fi
