@@ -50,16 +50,10 @@ git submodule update --init --recursive
 cp $WORKING_DIR/onnx_hotfix $ONNXRUNTIME_FOLDER/cmake/external/onnx/CMakeLists.txt
 
 ONNXRUNTIME_BUILD=$ONNXRUNTIME_FOLDER/onnxruntime_build
-# remove all configurations are used before
-if [ -d $ONNXRUNTIME_BUILD ]; then
-  rm -rf $ONNXRUNTIME_BUILD
-fi
 mkdir -p $ONNXRUNTIME_BUILD
 cd $ONNXRUNTIME_BUILD
-
+make clean
 cp $WORKING_DIR/merge.mri $ONNXRUNTIME_BUILD
-
-
 if [ "$1" = "onnxruntime-shared-library" ]; then
   cmake ../cmake -G"Unix Makefiles" \
     -DCMAKE_INSTALL_PREFIX=$WORKING_DIR \
