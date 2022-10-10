@@ -53,7 +53,6 @@ ONNXRUNTIME_BUILD=$ONNXRUNTIME_FOLDER/onnxruntime_build
 mkdir -p $ONNXRUNTIME_BUILD
 cd $ONNXRUNTIME_BUILD
 make clean
-cp $WORKING_DIR/merge.mri $ONNXRUNTIME_BUILD
 if [ "$1" = "onnxruntime-shared-library" ]; then
   cmake ../cmake -G"Unix Makefiles" \
     -DCMAKE_INSTALL_PREFIX=$WORKING_DIR \
@@ -66,6 +65,7 @@ if [ "$1" = "onnxruntime-shared-library" ]; then
     --target install \
     -- -j$NUM_CORE
 else
+  cp $WORKING_DIR/merge.mri $ONNXRUNTIME_BUILD
   AR=aarch64-linux-gnu-ar
   cmake ../cmake -G"Unix Makefiles" \
     -DCMAKE_INSTALL_PREFIX=$WORKING_DIR \
@@ -73,7 +73,7 @@ else
     -DONNX_CUSTOM_PROTOC_EXECUTABLE=$PROTOBUF_FOLDER/bin/protoc \
     -DCMAKE_TOOLCHAIN_FILE=$WORKING_DIR/tool.cmake
   make -j$NUM_CORE
-  $AR -M < ./merge.mri
   make install
+  $AR -M < ./merge.mri
   cp $ONNXRUNTIME_BUILD/libonnxruntime.a $WORKING_DIR/lib
 fi
